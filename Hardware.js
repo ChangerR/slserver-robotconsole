@@ -4,7 +4,7 @@
 var net = require('net');
 var EventEmitter = require('events').EventEmitter;
 
-function Hardware(dispatch) {
+function Hardware() {
 	var hardware = new EventEmitter();
 	var hardwareConnected = false;
 	var hardwareHandsanked = false;
@@ -31,10 +31,12 @@ function Hardware(dispatch) {
 			}else{
 				var str = data.replace(/\r\n/,'');
 				
+			/*
 				switch(str) {
 				case '7:::*':
 					break;
 				}
+			*/
 			}
 		});
 
@@ -59,7 +61,8 @@ function Hardware(dispatch) {
 	return hardware;
 }
 
-var dis = {};
+//var dis = {};
 
-hardware = new Hardware(dis);
-hardware.connect();
+//hardware = new Hardware(dis);
+//hardware.connect();
+module.exports = Hardware;

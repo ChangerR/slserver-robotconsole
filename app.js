@@ -10,6 +10,9 @@ var server = http.createServer(app);
 var socketio = require('socket.io').listen(server);
 var scripts = [],styles = [];
 var options = [];
+var Hardware = require('./Hardware');
+//var EventEmitter = require('events').EventEmitter;
+
 
 app.set('title','burrito-rebot');
 app.use(express.static(__dirname + '/static'));
@@ -24,8 +27,13 @@ app.get('/',function(req,res) {
 	});
 });
 
+var hardware = {};
+var connections = 0;
+
 socketio.sockets.on('connection',function(socket) {
-
-
+	connections += 1;
+	if(connections == 1) {
+		hardware = Hardware.connect();
+	}
 });
 server.listen(9000);
