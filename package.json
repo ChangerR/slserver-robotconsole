@@ -1,0 +1,23 @@
+{
+  "name": "burrito-cockpid",
+  "author": "changer",
+  "description": "null",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MysteriousChanger/slserver-robotconsole.git"
+  },
+  "dependencies": {
+    "express": "= 3.4.8",
+    "ejs": "~0.8.3",
+    "socket.io": "~1.1.0",
+    "forever-monitor": ""
+  },
+  "bundleDependencies": [
+    "express",
+    "socket.io"
+  ],
+  "engines": {
+    "node": ">= 0.12.7"
+  }
+}
