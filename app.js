@@ -27,13 +27,39 @@ app.get('/',function(req,res) {
 	});
 });
 
+
+
 var hardware = {};
 var connections = 0;
 
 socketio.sockets.on('connection',function(socket) {
 	connections += 1;
 	if(connections == 1) {
-		hardware = Hardware.connect();
+		hardware = new Hardware();
+		hardware.connect();
 	}
+	
+	socket.on('control',function(data) {
+		var str = 'go(' + data._throttle + ',' + data._yaw + ',' + data._lift + ')';
+		hardware.write(2,str);
+	});
 });
+
+if (process.platform === 'linux') {
+	process.on('SIGTERM', function () {
+		if(connections >= 1) {
+			hardware.close();
+		}
+		console.error('got SIGTERM, shutting down...');
+		process.exit(0);
+	});
+	process.on('SIGINT', function () {
+		if(connections >= 1) {
+			hardware.close();
+		}
+		console.error('got SIGTERM, shutting down...');
+		process.exit(0);
+	});
+}
+
 server.listen(9000);

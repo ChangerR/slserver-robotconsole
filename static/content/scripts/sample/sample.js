@@ -157,6 +157,7 @@ $(document).ready(function(){
             // { type: 'hold', mask: 'Ctrl+Down', target: 'light', invoke: 'lightDown', lable: 'tl'},
         ]
     });
+	window.control = $controller;
 });
 
 /*******************

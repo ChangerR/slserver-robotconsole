@@ -48,7 +48,7 @@ function Hardware() {
 	}
 
 	hardware.write = function(channel,data) {
-		var str = str(channel) + ':::' + data + '\r\n'
+		var str = channel + ':::' + data + '\r\n'
 		if(hardwareHandsanked)
 			hardware.client.write(str);
 	}
