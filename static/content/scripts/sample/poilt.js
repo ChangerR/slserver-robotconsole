@@ -18,7 +18,7 @@ $(function(){
 		rov.sendControl = function() {
 			if(rov.throttle != rov.control._throttle || 
 			rov.yaw != rov.control._yaw || rov.lift != rov.control._lift) {
-				console.log('go(' + rov.throttle + ',' + rov.yaw + ','+ rov.lift + ')');
+				//console.log('go(' + rov.throttle + ',' + rov.yaw + ','+ rov.lift + ')');
 				rov.control._throttle = rov.throttle;
 				rov.control._yaw = rov.yaw;
 				rov.control._lift = rov.lift;
