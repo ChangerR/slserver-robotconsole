@@ -6,8 +6,10 @@
 	<title>Sample1</title>
 	<script type="text/javascript" src="./content/scripts/jquery-1.11.1.min.js"></script>
 	<script type="text/javascript" src="./content/scripts/velocity-1.2.2.min.js"></script>
-	<script type="text/javascript" src="./content/scripts/jquery.shortcuts.js"></script>
+	<script type="text/javascript" src="./content/scripts/jquery.shortcuts.min.js"></script>
 	<script type="text/javascript" src="./content/scripts/sample/sample.js"></script>
+	<script type="text/javascript" src="./content/scripts/sample/horizon.js"></script>
+	<script type="text/javascript" src="./content/scripts/sample/compass.js"></script>
 	<script type="text/javascript" src="./content/scripts/sample/poilt.js"></script>
 	<script type='text/javascript' src="/socket.io/socket.io.js"></script>	
 	<link rel="stylesheet" type="text/css" href="./content/css/g.css">
@@ -96,7 +98,9 @@
 						</div>
 					</div>
 					<div class="cnsl-block">
-						<div class="picture"></div>
+						<div class="picture" id="video-container">
+							<img id="video" src="1.jpeg"/>
+						</div>
 					</div>
 					<div class="cnsl-block last">
 						<div class="showboard part-2">

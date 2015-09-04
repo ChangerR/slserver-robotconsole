@@ -31,12 +31,27 @@ app.get('/',function(req,res) {
 
 var hardware = {};
 var connections = 0;
+var statusBeat;
 
 socketio.sockets.on('connection',function(socket) {
 	connections += 1;
 	if(connections == 1) {
 		hardware = new Hardware();
 		hardware.connect();
+		
+		hardware.status.on('stream_on',function(data) {
+			socketio.sockets.emit('stream_on');
+		});
+		
+		statusBeat = setInterval(function() {
+			var status = {};
+			status["hdgd"] = parseFloat(hardware.status.repo["hdgd"]);
+			status["roll"] = parseFloat(hardware.status.repo["roll"]);
+			status["pitch"] = parseFloat(hardware.status.repo["pitch"]);
+			status["altitude"] = parseFloat(hardware.status.repo["depth"]);
+			status["speed"] = 0;
+			socketio.sockets.emit('navdata',status);
+		},1000);
 	}
 	
 	socket.on('control',function(data) {

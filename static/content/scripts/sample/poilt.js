@@ -69,10 +69,20 @@ $(function(){
 			  rov.sendControl();
 			}, 200);
 			
+			//controller.invoke("messageContainer", "message", "critical", "Test message on bottom right", "br");
 		}
 		return rov;
 	}
 	
-	window.rov = new poilt(control);
-	window.rov.start();
+	$rov = new poilt($controller);
+	$rov.start();
+	
+	$rov.socket.on('stream_on',function() {
+		var address = 'http://' + $rov.socket.io.engine.hostname + ':9000/1.jpg';
+		$('#video').attr('src',address);
+		//$controller.invoke("messageContainer", "message", "critical", "Test message on bottom right", "br");
+	});
+	
+	var ah = new window.HorizonDraw($rov);
+	var comp = new window.HorizonCompass($rov);
 });

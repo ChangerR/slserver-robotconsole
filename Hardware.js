@@ -3,17 +3,20 @@
 */
 var net = require('net');
 var EventEmitter = require('events').EventEmitter;
+var Status = require('./Status');
 
 function Hardware() {
 	var hardware = new EventEmitter();
 	var hardwareConnected = false;
 	var hardwareHandsanked = false;
 	var heartbeat;
-
+	
+	hardware.status = new Status();
+	
 	hardware.client = {};
 
 	hardware.connect = function() {
-		hardware.client	= net.connect({port:8080},function() {
+		hardware.client	= net.connect({host:'localhost',port:8080},function() {
 			console.log("connetct to hardware OK!");
 			hardware.client.setEncoding('utf-8');
 			hardware.client.write('ROVA:::\r\n');
@@ -22,21 +25,15 @@ function Hardware() {
 		hardware.client.on('data',function(data) {
 
 			if(hardwareHandsanked === false) {
-				if(data == 'SLOK:::\r\n') {
+				if(data === 'SLOK:::\r\n') {
 					hardwareHandsanked = true;
 					heartbeat =	setInterval(function() {
 						hardware.client.write('1:::\r\n');
 					},45000);				
 				}
 			}else{
-				var str = data.replace(/\r\n/,'');
-				
-			/*
-				switch(str) {
-				case '7:::*':
-					break;
-				}
-			*/
+				hardware.status.parse(data);
+				//console.log(hardware.status.repo);
 			}
 		});
 
