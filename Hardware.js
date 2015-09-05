@@ -23,23 +23,45 @@ function Hardware() {
 		});
 
 		hardware.client.on('data',function(data) {
-
-			if(hardwareHandsanked === false) {
-				if(data === 'SLOK:::\r\n') {
-					hardwareHandsanked = true;
-					heartbeat =	setInterval(function() {
-						hardware.client.write('1:::\r\n');
-					},45000);				
+			
+			hardware.status.parse(data,function(type,msg) {
+				if(hardwareHandsanked === false) {
+					if(type === 'SLOK') {
+						hardwareHandsanked = true;
+						heartbeat =	setInterval(function() {
+							hardware.client.write('1:::\r\n');
+						},45000);
+					} 
+				} else {
+					//console.log(type + ' ' + msg);
+					switch(type) {
+						case '7':
+							var _subparts = msg.split(',');
+							
+							for (_part in _subparts) {
+								var _value = _subparts[_part].split('=');
+								hardware.status.repo[_value[0]] = _value[1];
+							}
+							break;
+						case '9':
+							var l = JSON.parse(msg); 
+							hardware.status.emit(l["name"],l["args"]);
+							break;
+						default:
+							hardware.status.log = msg;
+					}
 				}
-			}else{
-				hardware.status.parse(data);
-				//console.log(hardware.status.repo);
-			}
+			});
 		});
 
 		hardware.client.on('close',function() {
 			hardwareHandsanked = false;
 			console.log('socket end');
+		});
+		
+		hardware.client.on('error',function() {
+			hardwareHandsanked = false;
+			console.log('socket occur error');
 		});
 
 	}
