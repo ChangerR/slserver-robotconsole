@@ -43,6 +43,22 @@ socketio.sockets.on('connection',function(socket) {
 			socketio.sockets.emit('stream_on');
 		});
 		
+		hardware.status.on('wifi_scan_results',function(data) {
+			socketio.sockets.emit('wifi_scan_results',data);
+		});
+		
+		hardware.status.on('wifi_status',function(data) {
+			socketio.sockets.emit('wifi_status',data);
+		});
+		
+		hardware.status.on('wifi_event_connected',function(data) {
+			socketio.sockets.emit('wifi_event_connected',data);
+		});
+		
+		hardware.status.on('wifi_event_disconnected',function(data) {
+			socketio.sockets.emit('wifi_event_disconnected',data);
+		});
+		
 		statusBeat = setInterval(function() {
 			var status = {};
 			status["hdgd"] = parseFloat(hardware.status.repo["hdgd"]);
@@ -57,6 +73,19 @@ socketio.sockets.on('connection',function(socket) {
 	socket.on('control',function(data) {
 		var str = 'go(' + data._throttle + ',' + data._yaw + ',' + data._lift + ')';
 		hardware.write(2,str);
+	});
+	
+	socket.on('wifi_scan',function(data) {
+		//console.log('wifi_scaning');
+		hardware.write(9,'wifi_scan');
+	});
+	
+	socket.on('connect_wifi',function(data) {
+		hardware.write(9,'connect_wifi(' + data + ')');
+	});
+	
+	socket.on('disconnect_wifi',function(data) {
+		hardware.write(9,'disconnect_wifi');
 	});
 });
 

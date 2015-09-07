@@ -15,6 +15,19 @@ $(function(){
 			_lift:0
 		};
 		
+		rov.scanWifi = function() {
+			console.log("scan_wifi");
+			rov.socket.emit('wifi_scan',[]);
+		}
+		
+		rov.connectWifi = function(data) {
+			rov.socket.emit('connect_wifi',data);
+		}
+		
+		rov.wifiDisconnect = function() {
+			rov.socket.emit('disconnect_wifi',[]);	
+		}
+		
 		rov.sendControl = function() {
 			if(rov.throttle != rov.control._throttle || 
 			rov.yaw != rov.control._yaw || rov.lift != rov.control._lift) {
@@ -81,6 +94,23 @@ $(function(){
 		var address = 'http://' + $rov.socket.io.engine.hostname + ':9000/1.jpg';
 		$('#video').attr('src',address);
 		//$controller.invoke("messageContainer", "message", "critical", "Test message on bottom right", "br");
+	});
+	
+	$rov.socket.on('wifi_scan_results',function(data) {
+		$controller.invoke("goProSelector", "setgopros", data);
+	});
+	
+	$rov.socket.on('wifi_status',function(data) {
+		$controller.invoke("goProInfo", "setgopro", data[0].ssid);
+        $controller.invoke("goProInfo", "setsignal", data[0].signal);
+	});
+	
+	$rov.socket.on('wifi_event_connected',function(data) {
+		$controller.invoke("messageContainer", "message", "info", "ssid " + data + " has connected", "tl");
+	});
+	
+	$rov.socket.on('wifi_event_disconnected',function(data) {
+		$controller.invoke("messageContainer", "message", 'warning', "wifi has disconnected", "tl");
 	});
 	
 	var ah = new window.HorizonDraw($rov);
