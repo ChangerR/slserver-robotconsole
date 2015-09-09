@@ -32,15 +32,19 @@ app.get('/',function(req,res) {
 var hardware = {};
 var connections = 0;
 var statusBeat;
+var isGoproOn = false;
+var wifi_now_status = [];
 
 socketio.sockets.on('connection',function(socket) {
 	connections += 1;
+	
 	if(connections == 1) {
 		hardware = new Hardware();
 		hardware.connect();
 		
 		hardware.status.on('stream_on',function(data) {
 			socketio.sockets.emit('stream_on');
+			isGoproOn = true;
 		});
 		
 		hardware.status.on('wifi_scan_results',function(data) {
@@ -48,6 +52,7 @@ socketio.sockets.on('connection',function(socket) {
 		});
 		
 		hardware.status.on('wifi_status',function(data) {
+			wifi_now_status = data;
 			socketio.sockets.emit('wifi_status',data);
 		});
 		
@@ -57,6 +62,7 @@ socketio.sockets.on('connection',function(socket) {
 		
 		hardware.status.on('wifi_event_disconnected',function(data) {
 			socketio.sockets.emit('wifi_event_disconnected',data);
+			isGoproOn = false;
 		});
 		
 		statusBeat = setInterval(function() {
@@ -68,6 +74,13 @@ socketio.sockets.on('connection',function(socket) {
 			status["speed"] = 0;
 			socketio.sockets.emit('navdata',status);
 		},1000);
+			
+	}
+	
+	socket.emit('wifi_status',wifi_now_status);
+	
+	if(isGoproOn) {
+		socket.emit('stream_on');
 	}
 	
 	socket.on('control',function(data) {
@@ -81,7 +94,7 @@ socketio.sockets.on('connection',function(socket) {
 	});
 	
 	socket.on('connect_wifi',function(data) {
-		hardware.write(9,'connect_wifi(' + data + ')');
+		hardware.write(9,'connect_wifi(' + data.ssid + ')');
 	});
 	
 	socket.on('disconnect_wifi',function(data) {

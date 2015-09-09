@@ -685,7 +685,7 @@ function goProSelectorInit($controller, data) {
             $list.append($bt);
             metroBtItemInit($bt);
             $bt.click(function(){
-				$rov.connectWifi($(this).html());
+				$rov.connectWifi(gopro);
             });
         };
     });

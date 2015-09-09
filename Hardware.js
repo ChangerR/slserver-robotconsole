@@ -31,6 +31,8 @@ function Hardware() {
 						heartbeat =	setInterval(function() {
 							hardware.client.write('1:::\r\n');
 						},45000);
+						
+						hardware.write(9,'wifi_status');
 					} 
 				} else {
 					//console.log(type + ' ' + msg);
@@ -68,6 +70,7 @@ function Hardware() {
 
 	hardware.write = function(channel,data) {
 		var str = channel + ':::' + data + '\r\n'
+
 		if(hardwareHandsanked)
 			hardware.client.write(str);
 	}

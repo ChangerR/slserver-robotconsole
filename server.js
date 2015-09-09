@@ -102,7 +102,8 @@ var server = net.createServer(function(conn) {
 						d.args = [];
 						
 						conn.write('9:::' + JSON.stringify(d) + '\r\n');
-					}
+					} else 
+						console.log(msg);
 					break;
 			}
 		});
