@@ -37,7 +37,7 @@ var wifi_now_status = [];
 
 socketio.sockets.on('connection',function(socket) {
 	connections += 1;
-	
+	console.log("a client connect");	
 	if(connections == 1) {
 		hardware = new Hardware();
 		hardware.connect();
@@ -89,7 +89,7 @@ socketio.sockets.on('connection',function(socket) {
 	});
 	
 	socket.on('wifi_scan',function(data) {
-		//console.log('wifi_scaning');
+		console.log('wifi_scaning');
 		hardware.write(9,'wifi_scan');
 	});
 	
