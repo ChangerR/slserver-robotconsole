@@ -91,7 +91,7 @@ $(function(){
 	$rov.start();
 	
 	$rov.socket.on('stream_on',function() {
-		var address = 'http://' + $rov.socket.io.engine.hostname + ':9000/1.jpg';
+		var address = 'http://' + $rov.socket.io.engine.hostname + ':8080/stream';
 		$('#video').attr('src',address);
 		//$controller.invoke("messageContainer", "message", "critical", "Test message on bottom right", "br");
 	});
