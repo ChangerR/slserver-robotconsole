@@ -101,8 +101,13 @@ $(function(){
 	});
 	
 	$rov.socket.on('wifi_status',function(data) {
-		$controller.invoke("goProInfo", "setgopro", data[0].ssid);
-        $controller.invoke("goProInfo", "setsignal", data[0].signal);
+		if(len(data) !== 0) {
+			$controller.invoke("goProInfo", "setgopro", data[0].ssid);
+			$controller.invoke("goProInfo", "setsignal", data[0].signal);
+		} else {
+			$controller.invoke("goProInfo", "setgopro", null);
+			$controller.invoke("goProInfo", "setsignal", 0);
+		}
 	});
 	
 	$rov.socket.on('wifi_event_connected',function(data) {
