@@ -94,7 +94,7 @@ socketio.sockets.on('connection',function(socket) {
 	});
 	
 	socket.on('connect_wifi',function(data) {
-		hardware.write(9,'connect_wifi(' + data.ssid + ')');
+		hardware.write(9,'connect_wifi(' + data + ')');
 	});
 	
 	socket.on('disconnect_wifi',function(data) {

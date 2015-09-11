@@ -17,7 +17,7 @@ $(function(){
 		
 		rov.scanWifi = function() {
 			console.log("scan_wifi");
-			rov.socket.emit('wifi_scan',[]);
+			rov.socket.emit('wifi_scan');
 		}
 		
 		rov.connectWifi = function(data) {
@@ -101,7 +101,7 @@ $(function(){
 	});
 	
 	$rov.socket.on('wifi_status',function(data) {
-		if(len(data) !== 0) {
+		if(data.length !== 0) {
 			$controller.invoke("goProInfo", "setgopro", data[0].ssid);
 			$controller.invoke("goProInfo", "setsignal", data[0].signal);
 		} else {
