@@ -179,7 +179,7 @@ $(document).ready(function(){
         stay : 5000,
     });
     goProSelectorInit($controller, {
-        empty: '扫描中...',
+        empty: '点击图标扫描...',
         searching: '扫描中...',
         gopros: [
            
@@ -664,13 +664,17 @@ function goProSelectorInit($controller, data) {
     $controller.set("goProSelector", data);
     $controller.do("goProSelector", function($obj, data) {
         $obj.hover(function(){
-            $(".title", $(this)).velocity('stop').velocity({ width : 100} );
-			$controller.invoke("goProSelector", "setgopros", []);
-			$rov.scanWifi();
+            $(".title", $(this)).velocity('stop').velocity({ width : 100} );		
         }, function(){
             $(".title", $(this)).velocity('stop').velocity({ width : 302} );
+			$controller.invoke("goProSelector", "setgopros", []);
         });
     });
+	
+	$("#scan_wifi").click(function() {
+		$rov.scanWifi();
+	});
+	
     $controller.attach("goProSelector", "setgopros", function(gopros, data) {
         data.gopros = gopros;
         var $list = $(".select-list", this).first();
